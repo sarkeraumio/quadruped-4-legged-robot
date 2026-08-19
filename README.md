@@ -1,1 +1,3 @@
-# quadruped--4-leg-robot
+# Quadruped Robot
+
+Esp32 Powered

@@ -1,0 +1,53 @@
+#include <ESP32Servo.h>
+
+// ============ CHANGE THESE TWO PINS ============
+const int PIVOT_PIN = 21;   // hip / left-right
+const int LIFT_PIN  = 23;   // knee / up-down
+// ==============================================
+// right front
+Servo pivot;
+Servo lift;
+
+void setup() {
+  Serial.begin(115200);
+  Serial.println("Single leg test started");
+
+  // Attach with typical SG90 pulse range
+  pivot.attach(PIVOT_PIN, 500, 2400);
+  lift.attach(LIFT_PIN, 500, 2400);
+
+  // Go to neutral position first
+  pivot.write(90);
+  lift.write(90);
+  delay(1000);
+  Serial.println("Both servos centered at 90°");
+}
+
+void loop() {
+  // ---- Test 1: Lift the leg up and down ----
+  Serial.println("Lifting leg...");
+  lift.write(50);          // lift up (adjust 40-60 if needed)
+  delay(800);
+  lift.write(90);          // back to neutral
+  delay(800);
+
+  // ---- Test 2: Swing the leg left-right ----
+  Serial.println("Swinging leg...");
+  pivot.write(60);         // one side
+  delay(800);
+  pivot.write(120);        // other side
+  delay(800);
+  pivot.write(90);         // back to center
+  delay(1000);
+
+  // ---- Test 3: Combined (simple step motion) ----
+  Serial.println("Simple step motion...");
+  lift.write(50);          // lift
+  delay(400);
+  pivot.write(60);         // swing
+  delay(400);
+  lift.write(90);          // put down
+  delay(400);
+  pivot.write(90);         // return
+  delay(1000);
+}
